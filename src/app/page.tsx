@@ -1,9 +1,16 @@
-import { Button } from "@/shared/ui/button";
+import { prisma } from "@/shared/lib/db";
+import { Card, CardTitle } from "@/shared/ui/card";
 
-export default function Home() {
+export default async function Home() {
+  const res = await prisma.game.findMany();
+
   return (
     <div className="flex justify-center">
-      <Button>click</Button>
+      {res.map(({ name, id }) => (
+        <Card key={id} className="px-4">
+          <CardTitle>{name}</CardTitle>
+        </Card>
+      ))}
     </div>
   );
 }
