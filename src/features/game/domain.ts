@@ -7,7 +7,6 @@ export type T_Player = {
 export type T_GameIdle = {
   id: string;
   creator: T_Player;
-  players: T_Player[];
   status: "IDLE";
 };
 

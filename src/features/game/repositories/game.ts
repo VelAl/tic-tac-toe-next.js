@@ -1,5 +1,5 @@
 import { prisma } from "@/shared/lib/db";
-import { Game, User } from "generatedPrisma";
+import { Game, User, Prisma } from "generatedPrisma";
 import { z } from "zod";
 
 import {
@@ -21,11 +21,15 @@ function dbGameToTypeT_Game(
 ): T_Game {
   switch (game.status) {
     case "IDLE": {
+      const [creator] = game.players;
+      if (!creator) {
+        throw new Error("The game's status 'IDLE' implies a crator player!");
+      }
+
       return {
+        creator,
         id: game.id,
-        players: game.players,
         status: game.status,
-        creator: game.players[0],
       } satisfies T_GameIdle;
     }
 
@@ -40,7 +44,8 @@ function dbGameToTypeT_Game(
     }
 
     case "GAME_OVER": {
-      if (!game.winner) throw new Error("The game's status implies a winner!");
+      if (!game.winner)
+        throw new Error("The game's status 'GAME_OVER' implies a winner!");
       return {
         id: game.id,
         players: game.players,
@@ -54,8 +59,9 @@ function dbGameToTypeT_Game(
   return {} as T_Game;
 }
 
-async function gamesList(): Promise<T_Game[]> {
+async function gamesList(where: Prisma.GameWhereInput): Promise<T_Game[]> {
   const games = await prisma.game.findMany({
+    where,
     include: {
       winner: true,
       players: true,
