@@ -73,6 +73,25 @@ async function gamesList(where: Prisma.GameWhereInput): Promise<T_Game[]> {
   return games.map(dbGameToTypeT_Game);
 }
 
+async function createGame(playerId: string): Promise<T_GameIdle> {
+  const game = await prisma.game.create({
+    data: {
+      status: "IDLE",
+      field: Array(9).fill(null),
+      players: {
+        connect: [{ id: playerId }],
+      },
+    },
+    include: {
+      players: true,
+      winner: true,
+    },
+  });
+
+  return dbGameToTypeT_Game(game) as T_GameIdle;
+}
+
 export const gameRepository = {
+  createGame,
   gamesList,
 };
