@@ -1,5 +1,7 @@
+type T_UsualObj = { [key: keyof any]: unknown };
+
 export const removePassword = <
-  T extends { [key: keyof any]: unknown },
+  T extends T_UsualObj,
   K extends keyof T = "passwordHash"
 >(
   entity: T,

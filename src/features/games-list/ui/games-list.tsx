@@ -1,4 +1,4 @@
-import { getIdleGames } from "@/features/game/server";
+import { getIdleGames } from "@/entities/game/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 
 export const GamesList = async () => {
