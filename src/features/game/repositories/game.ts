@@ -8,8 +8,8 @@ import {
   T_GameOver,
   T_GameOverDraw,
   T_GameProgress,
-  T_Player,
 } from "../domain";
+import { removePassword } from "@/shared/lib/password";
 
 const fieldShema = z.array(z.union([z.string(), z.null()]));
 
@@ -19,9 +19,11 @@ function dbGameToTypeT_Game(
     winner: User | null;
   }
 ): T_Game {
+  const players = game.players.map((u) => removePassword(u));
+
   switch (game.status) {
     case "IDLE": {
-      const [creator] = game.players;
+      const [creator] = players;
       if (!creator) {
         throw new Error("The game's status 'IDLE' implies a crator player!");
       }
@@ -37,7 +39,7 @@ function dbGameToTypeT_Game(
     case "IN_PROGRESS": {
       return {
         id: game.id,
-        players: game.players,
+        players,
         status: game.status,
         field: fieldShema.parse(game.field),
       } satisfies T_GameProgress | T_GameOverDraw;
@@ -48,10 +50,10 @@ function dbGameToTypeT_Game(
         throw new Error("The game's status 'GAME_OVER' implies a winner!");
       return {
         id: game.id,
-        players: game.players,
+        players,
         status: game.status,
         field: fieldShema.parse(game.field),
-        winner: game.winner as T_Player,
+        winner: removePassword(game.winner),
       } satisfies T_GameOver;
     }
   }
