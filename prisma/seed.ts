@@ -2,25 +2,7 @@ import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  await prisma.game.create({
-    data: {
-      name: "GAME_1",
-    },
-  });
-
-  await prisma.game.create({
-    data: {
-      name: "GAME_2",
-    },
-  });
-
-  await prisma.game.create({
-    data: {
-      name: "GAME_3",
-    },
-  });
-}
+async function main() {}
 
 main()
   .then(async () => {

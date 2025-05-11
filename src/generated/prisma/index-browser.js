@@ -122,7 +122,17 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.GameScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  status: 'status',
+  field: 'field',
+  winnerId: 'winnerId',
+  gameOverAt: 'gameOverAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  login: 'login',
+  rating: 'rating',
+  passwordHash: 'passwordHash'
 };
 
 exports.Prisma.SortOrder = {
@@ -130,14 +140,36 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
 
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.GameStatus = exports.$Enums.GameStatus = {
+  IDLE: 'IDLE',
+  IN_PROGRESS: 'IN_PROGRESS',
+  GAME_OVER: 'GAME_OVER',
+  GAME_OVER_DRAW: 'GAME_OVER_DRAW'
+};
 
 exports.Prisma.ModelName = {
-  Game: 'Game'
+  Game: 'Game',
+  User: 'User'
 };
 
 /**
